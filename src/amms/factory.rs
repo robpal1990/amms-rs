@@ -16,6 +16,7 @@ use serde::{Deserialize, Serialize};
 
 use super::error::AMMError;
 
+//TODO: add consts for steps, batch size, etc.
 pub trait AutomatedMarketMakerFactory {
     //TODO: GAT for AMM
 
