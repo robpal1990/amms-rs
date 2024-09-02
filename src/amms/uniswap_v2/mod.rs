@@ -1,4 +1,4 @@
-use super::{error::AMMError, AutomatedMarketMaker};
+use super::{amm::AutomatedMarketMaker, error::AMMError};
 
 use alloy::{
     network::Network,
