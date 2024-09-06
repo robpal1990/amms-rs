@@ -12,12 +12,21 @@ use std::{
     sync::Arc,
 };
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct UniswapV2Pool {}
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct UniswapV2Pool {
+    pub address: Address,
+    pub token_a: Address,
+    pub token_a_decimals: u8,
+    pub token_b: Address,
+    pub token_b_decimals: u8,
+    pub reserve_0: u128,
+    pub reserve_1: u128,
+    pub fee: u32,
+}
 
 impl AutomatedMarketMaker for UniswapV2Pool {
     fn address(&self) -> Address {
-        todo!()
+        self.address
     }
 
     async fn sync<T, N, P>(&mut self, middleware: Arc<P>) -> Result<(), AMMError>
