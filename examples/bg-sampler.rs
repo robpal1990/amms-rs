@@ -7,6 +7,7 @@ use axum::{
 };
 
 use futures::future::join_all;
+use rayon::prelude::*;
 use serde::{Deserialize, Serialize};
 use tokio::{
     net::TcpListener,
@@ -258,7 +259,7 @@ pub async fn local_sample(
 
     if let Some(amm) = state_space.read().await.0.get(&query_params.pool_address) {
         let buy_amounts = sell_amounts
-            .iter()
+            .par_iter()
             .map(|amount| {
                 amm.simulate_swap(query_params.sell_token, query_params.buy_token, *amount)
                     .unwrap()
