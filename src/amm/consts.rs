@@ -19,7 +19,7 @@ pub const U256_2: U256 = U256::from_limbs([2, 0, 0, 0]);
 pub const U256_1: U256 = U256::from_limbs([1, 0, 0, 0]);
 
 // Uniswap V3 specific
-pub const POPULATE_TICK_DATA_STEP: u64 = 100000;
+pub const POPULATE_TICK_DATA_STEP: u64 = 30000;
 pub const Q128: U256 = U256::from_limbs([0, 0, 1, 0]);
 pub const Q224: U256 = U256::from_limbs([0, 0, 0, 4294967296]);
 

@@ -14,7 +14,7 @@ use tokio::{
     time::{sleep, Duration},
 };
 
-use std::sync::Arc;
+use std::{path::Path, sync::Arc};
 
 use alloy::{
     primitives::{address, Address, U256},
@@ -24,7 +24,7 @@ use alloy::{
 
 use amms::{
     amm::AutomatedMarketMaker,
-    sync::checkpoint::{self, construct_checkpoint},
+    sync::checkpoint::{self, construct_checkpoint, deconstruct_checkpoint},
 };
 use amms::{
     amm::{
@@ -74,11 +74,28 @@ async fn main() {
         .expect("Failed to get current block");
     println!("Current block number: {}", current_block);
 
+    if Path::new("checkpoint.json").exists() {
+        let (amms, block) = deconstruct_checkpoint("checkpoint.json").unwrap();
+        cached_pools = Some(
+            amms.into_iter()
+                .map(|x| {
+                    (
+                        match x {
+                            AMM::UniswapV3Pool(pool) => pool,
+                            _ => unimplemented!(),
+                        },
+                        block,
+                    )
+                })
+                .collect(),
+        )
+    }
+
     if cached_pools.is_none() {
         let mut futures = Vec::with_capacity(WETH_USDC_POOLS.len());
-        for p in WETH_USDC_POOLS.iter().skip(1).cloned() {
+        for p in WETH_USDC_POOLS.iter().cloned() {
             let handle =
-                UniswapV3Pool::new_from_address(p, None, 12376729, Arc::clone(&http_provider));
+                UniswapV3Pool::new_from_address(p, None, 12369621, Arc::clone(&http_provider));
             futures.push(handle);
         }
 
@@ -141,8 +158,8 @@ async fn main() {
 
     let (mut rx_state, _join_handles) = state_space_manager
         .subscribe_state_changes(
-            current_block as u64 - 100, // Start from 100 blocks ago
-            10,                         // Reduce batch size for more frequent updates
+            last_synced_block, // Start from 100 blocks ago
+            100,               // Reduce batch size for more frequent updates
         )
         .await
         .unwrap();

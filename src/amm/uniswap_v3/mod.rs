@@ -928,7 +928,7 @@ impl UniswapV3Pool {
         let liquidity_gross_before = info.liquidity_gross;
 
         let liquidity_gross_after = if liquidity_delta < 0 {
-            liquidity_gross_before.saturating_sub((-liquidity_delta) as u128)
+            liquidity_gross_before - ((-liquidity_delta) as u128)
         } else {
             liquidity_gross_before + (liquidity_delta as u128)
         };
