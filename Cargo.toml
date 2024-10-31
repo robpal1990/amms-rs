@@ -35,6 +35,7 @@ alloy = { version = "0.5", features = [
 ] }
 
 rug = "1.26.1"
+rayon = "1.10.0"
 
 [features]
 default = ["state-space"]
