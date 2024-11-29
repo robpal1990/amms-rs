@@ -928,7 +928,7 @@ impl UniswapV3Pool {
         let liquidity_gross_before = info.liquidity_gross;
 
         let liquidity_gross_after = if liquidity_delta < 0 {
-            liquidity_gross_before.saturating_sub((-liquidity_delta) as u128)
+            liquidity_gross_before - ((-liquidity_delta) as u128)
         } else {
             liquidity_gross_before + (liquidity_delta as u128)
         };
@@ -1937,7 +1937,7 @@ mod test {
         let rpc_endpoint = std::env::var("ETHEREUM_RPC_ENDPOINT").unwrap();
         let provider = Arc::new(ProviderBuilder::new().on_http(rpc_endpoint.parse().unwrap()));
 
-        let pool = UniswapV3Pool::new_from_address(
+        let (pool, _) = UniswapV3Pool::new_from_address(
             address!("88e6A0c2dDD26FEEb64F039a2c41296FcB3f5640"),
             Some(address!("1F98431c8aD98523631AE4a59f267346ea31F984")),
             12369620,

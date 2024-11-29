@@ -50,7 +50,7 @@ criterion = "0.5"
 tokio = { version = "1.40", default-features = false, features = [
   "rt-multi-thread",
 ] }
-alloy = { version = "0.4", features = ["rpc-client"] }
+alloy = { version = "0.5", features = ["rpc-client"] }
 
 [[bench]]
 name = "state_space"
@@ -58,6 +58,10 @@ harness = false
 
 [[bench]]
 name = "uniswapv2_simulate"
+harness = false
+
+[[bench]]
+name = "curve_stableswap"
 harness = false
 
 [profile.release]
